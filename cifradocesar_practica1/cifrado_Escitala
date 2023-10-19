@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escítala Cipher</title>
+    <style>
+        /* Fuente */
+        body {
+            font-family: sans-serif;
+        }
+
+        /* Contenedor */
+        .container {
+            margin: 0 auto;
+            max-width: 500px;
+            padding: 2rem;
+        }
+
+        /* Elementos del formulario */
+        label {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        input,
+        textarea,
+        button {
+            width: 100%;
+            padding: 0.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 0.5rem;
+        }
+
+        /* Botones */
+        button {
+            cursor: pointer;
+            background-color: #000;
+            color: #fff;
+        }
+
+        button:hover {
+            background-color: #333;
+        }
+
+        /* Resultados */
+        .results {
+            margin-top: 2rem;
+        }
+
+        .results p {
+            font-weight: bold;
+        }
+
+        .results textarea {
+            height: 10rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cifrado Escítala</h1>
+
+        <div class="form-group">
+            <label for="message">Mensaje:</label>
+            <textarea id="message" class="form-control" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="key">Clave:</label>
+            <input type="number" id="key" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-primary" onclick="encrypt()">Cifrar</button>
+            <button class="btn btn-secondary" onclick="decrypt()">Descifrar</button>
+        </div>
+
+        <div class="results">
+            <p><strong>Mensaje Cifrado/Descifrado:</strong></p>
+            <textarea class="form-control" rows="4" id="result" readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        function encrypt() {
+            const message = document.getElementById("message").value;
+            const key = parseInt(document.getElementById("key").value);
+
+            let result = performEncryption(message, key);
+
+            document.getElementById("result").value = result;
+        }
+
+        function decrypt() {
+            const encryptedMessage = document.getElementById("message").value;
+            const key = parseInt(document.getElementById("key").value);
+
+            let result = performDecryption(encryptedMessage, key);
+
+            document.getElementById("result").value = result;
+        }
+
+        function performEncryption(message, key) {
+            const numRows = Math.ceil(message.length / key);
+            let grid = new Array(numRows).fill("");
+
+            for (let i = 0; i < message.length; i++) {
+                const row = i % numRows;
+                grid[row] += message[i];
+            }
+
+            return grid.join("");
+        }
+
+        function performDecryption(encryptedMessage, key) {
+    const numRows = Math.ceil(encryptedMessage.length / key);
+    const numCols = Math.ceil(encryptedMessage.length / numRows);
+    const grid = new Array(numRows).fill("");
+
+    for (let i = 0; i < encryptedMessage.length; i++) {
+        const col = i % numCols;
+        const row = Math.floor(i / numCols);
+        const index = col * numRows + row;
+        grid[index] = encryptedMessage[i];
+    }
+
+    return grid.join("");
+}
+
+    </script>
+</body>
+</html>
